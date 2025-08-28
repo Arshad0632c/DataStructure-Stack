@@ -1,0 +1,59 @@
+SOURCE CODE:
+#include<iostream>
+#include<string>
+#include <cmath>
+
+using namespace std;
+void EvaluationPostfix(string postfix);
+int stack[20];
+int top = -1;
+void push(int x)
+{
+    stack[++top] = x;
+}
+int pop()
+{
+    if(top == -1)
+        return -1;
+    else
+        return stack[top--];
+}
+void EvaluationPostfix(string postfix)
+{
+
+	int i=0,op1,op2;
+	char ch;
+	while((ch=postfix[i++])!='\0')
+	{
+		if(isdigit(ch))
+			push(ch-'0');
+		else
+		{
+			op2=pop();
+			op1=pop();
+			switch(ch)
+			{
+				case '+': push(op1+op2);
+						break;
+				case '-': push(op1-op2);
+						  break;
+				case '*': push(op1*op2);
+						  break;
+				case '/': push(op1/op2);
+						  break;
+				case '^': push(pow(op1,op2));
+						  break;
+				default: cout<<"character not matched\n";
+			}
+			cout<<"top = "<<stack[top]<<endl;
+		}
+	}
+	cout<<"Answer: "<<stack[top]<<endl;
+}
+int main()
+{
+	string exp;
+	printf("Enter the expression: ");
+	cin>>exp;
+	EvaluationPostfix(exp);
+}
