@@ -1,0 +1,75 @@
+SOURCE CODE:
+#include<iostream>
+#include<string.h>
+using namespace std;
+void infix_to_postfix(string infix);
+void display(string arr);
+char stack[20];
+int top = -1;
+void push(char x)
+{
+    stack[++top] = x;
+}
+char pop()
+{
+    if(top == -1)
+        return -1;
+    else
+        return stack[top--];
+}
+void display(string arr)
+{
+	int i;
+	for(i=0;i<arr.size();i++)
+		cout<<arr[i]<<" ";
+	printf("\n");
+}
+int precedence(char x)
+{
+    if(x == '(')
+        return 0;
+    if(x == '+' || x == '-')
+        return 1;
+    if(x == '*' || x == '/')
+        return 2;
+    if(x == '^')
+    	return 3;
+}
+main()
+{
+    string exp;
+    char ch, x;
+    cout<<"Enter the expression :: ";
+    cin>>exp;
+    infix_to_postfix(exp);
+}
+void infix_to_postfix(string infix)
+{
+	int i=0,j=0;
+	char postfix[100];
+	char ch,x;
+    while((ch=infix[i++])!= '\0')
+    {
+		if(ch == '(')
+            push(ch);
+      	else if(isalnum(ch))
+        	postfix[j++]=ch;
+        else if(ch == ')')
+        {
+            while(stack[top]!= '(')
+            	postfix[j++]=pop();
+            pop();
+        }
+        else
+        {
+            while(precedence(stack[top]) >= precedence(ch))
+            	postfix[j++]=pop();
+            push(ch);
+        }
+    }
+    while(top != -1)
+        postfix[j++]=pop();
+    postfix[j]='\0';
+    cout<<"Postfix expression is: ";
+    display(postfix);
+}
