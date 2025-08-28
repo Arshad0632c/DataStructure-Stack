@@ -1,0 +1,54 @@
+SOURCE CODE:
+#include<iostream>
+#include<string.h>
+using namespace std;
+int check_parentheses(string exp);
+void push(int);
+void pop();
+int stack[100];
+int top=-1,size=15;
+int main()
+{
+	string exp;
+	int result,i;
+	cout<<"exp: ";
+	cin >> exp;
+//	printf("%s ",exp);
+	result=check_parentheses(exp);
+	if(result==0)
+		cout<<"Unbalanced\n";
+	else
+		cout<<"Balanced\n";
+}
+
+int check_parentheses(string exp)
+{
+	int i;
+	for(i=0;i<exp.size();i++)
+	{
+		if((exp[i]=='(')||(exp[i]=='{')||(exp[i]=='['))
+			push(exp[i]);
+		else if ((exp[i]==')')||(exp[i]=='}')||
+					(exp[i]==']'))
+		{
+			if(((stack[top]=='(')&&(exp[i]==')'))||
+			((stack[top]=='{')&&(exp[i]=='}'))||
+			((stack[top]=='[')&&(exp[i]==']')))
+				pop();
+			else //if(top==-1) or parenthesis dint match
+				return 0;
+		}	
+	}//for
+	if(top==-1)
+		return 1;
+	else
+		return 0;
+}
+void push(int element)
+{
+	stack[++top]=element;
+}
+void pop()
+{
+	top--;				
+}
